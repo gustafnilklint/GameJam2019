@@ -8,30 +8,44 @@ const config = {
   physics: {
       default: 'arcade',
       arcade: {
-          gravity: { y: 200 }
+          debug: true
       }
   },
   scene: {
       preload: preload,
-      create: create
+      create: create,
+      update: update,
   }
 }
 
 const game = new Phaser.Game(config)
- 
+
+let player;
+let cursors;
+
 function preload() {
   this.load.image('logo', 'assets/logo.png')
 }
 
 function create() {
-  const logo = this.add.image(400, 150, 'logo')
+  cursors = this.input.keyboard.createCursorKeys();
+  player = this.physics.add.image(400, 150, 'logo')
+  player.setCollideWorldBounds(true);
+}
 
-  this.tweens.add({
-    targets: logo,
-    y: 450,
-    duration: 2000,
-    ease: 'Power2',
-    yoyo: true,
-    loop: -1
-  })
+
+function update() {
+  player.setVelocity(0);
+  if (cursors.left.isDown) {
+      player.setVelocityX(-300);
+  }
+  else if (cursors.right.isDown) {
+      player.setVelocityX(300);
+  }
+  if (cursors.up.isDown) {
+      player.setVelocityY(-300);
+  }
+  else if (cursors.down.isDown) {
+      player.setVelocityY(300);
+  }
 }
