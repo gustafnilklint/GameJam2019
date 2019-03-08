@@ -7,7 +7,7 @@
     "start": "webpack-dev-server --open --config webpack.dev.js",
     "build": "webpack --config webpack.prod.js",
     "test:unit": "jest --config jest.config.js",
-    "lint": "eslint"
+    "lint": "eslint ./src --ext .js"
   },
   "dependencies": {
     "phaser": "^3.2.0"
