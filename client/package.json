@@ -10,7 +10,8 @@
     "lint": "eslint ./src --ext .js"
   },
   "dependencies": {
-    "phaser": "^3.16.2"
+    "mousetrap": "^1.6.3",
+    "pixi.js": "^4.8.6"
   },
   "devDependencies": {
     "@babel/core": "^7.3.4",

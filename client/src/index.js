@@ -1,49 +1,94 @@
-import * as Phaser from 'phaser';
+import { Application, Sprite, loader } from 'pixi.js';
+import { isKeyDown, addKey } from './keyboard';
 
-let player;
-let cursors;
+const app = new Application();
 
-function preload() {
-  this.load.image('logo', 'assets/logo.png');
+function setupRenderer() {
+  app.renderer.backgroundColor = 0x061639;
+  app.renderer.autoResize = true;
+
+  app.renderer.view.style.position = 'absolute';
+  app.renderer.view.style.display = 'block';
+  app.renderer.autoResize = true;
+  app.renderer.resize(window.innerWidth, window.innerHeight);
 }
 
-function create() {
-  cursors = this.input.keyboard.createCursorKeys();
-  player = this.physics.add.image(400, 150, 'logo');
-  player.setCollideWorldBounds(true);
+let red;
+let blue;
+const RED_IMAGE = 'assets/red.png';
+const BLUE_IMAGE = 'assets/blue.png';
+
+function loadSprites() {
+  loader.add([RED_IMAGE, BLUE_IMAGE]).load(() => {
+    red = new Sprite(loader.resources[RED_IMAGE].texture);
+    red.x = 200;
+    red.y = 200;
+    red.scale.set(10, 10);
+
+    blue = new Sprite(loader.resources[BLUE_IMAGE].texture);
+    blue.x = 400;
+    blue.y = 200;
+    blue.scale.set(10, 10);
+
+
+    app.stage.addChild(red);
+    app.stage.addChild(blue);
+  });
 }
 
-
-function update() {
-  player.setVelocity(0);
-  if (cursors.left.isDown) {
-    player.setVelocityX(-300);
-  } else if (cursors.right.isDown) {
-    player.setVelocityX(300);
-  }
-  if (cursors.up.isDown) {
-    player.setVelocityY(-300);
-  } else if (cursors.down.isDown) {
-    player.setVelocityY(300);
-  }
-}
-
-const config = {
-  parent: 'game',
-  type: Phaser.AUTO,
-  width: 800,
-  height: 600,
-  physics: {
-    default: 'arcade',
-    arcade: {
-      debug: true,
-    },
-  },
-  scene: {
-    preload,
-    create,
-    update,
-  },
+const KEYS = {
+  left: 'left',
+  right: 'right',
+  up: 'up',
+  down: 'down',
+  a: 'a',
+  d: 'd',
+  w: 'w',
+  s: 's',
 };
 
-const game = new Phaser.Game(config);
+
+function setupGameLoop() {
+  const gameLoop = (delta) => {
+    const SPEED = 5;
+
+    // red
+    if (isKeyDown(KEYS.left)) {
+      red.x -= (1 + delta) * SPEED;
+    } else if (isKeyDown(KEYS.right)) {
+      red.x += (1 + delta) * SPEED;
+    }
+
+    if (isKeyDown(KEYS.up)) {
+      red.y -= (1 + delta) * SPEED;
+    } else if (isKeyDown(KEYS.down)) {
+      red.y += (1 + delta) * SPEED;
+    }
+
+    // blue
+    if (isKeyDown(KEYS.a)) {
+      blue.x -= (1 + delta) * SPEED;
+    } else if (isKeyDown(KEYS.d)) {
+      blue.x += (1 + delta) * SPEED;
+    }
+
+    if (isKeyDown(KEYS.w)) {
+      blue.y -= (1 + delta) * SPEED;
+    } else if (isKeyDown(KEYS.s)) {
+      blue.y += (1 + delta) * SPEED;
+    }
+  };
+  app.ticker.add(delta => gameLoop(delta));
+}
+
+function setupKeyboard() {
+  Object.values(KEYS).forEach(k => addKey(k));
+}
+
+setupRenderer();
+loadSprites();
+setupGameLoop();
+setupKeyboard();
+
+
+document.body.appendChild(app.view);
