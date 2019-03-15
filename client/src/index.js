@@ -11,7 +11,7 @@ const playerSpriteMap = {};
 let playerConnectionNumber = 0;
 let id;
 let state;
-let timeToLog = 1;
+const timeToLog = 1;
 
 const getNextPlayerSprite = playerId => {
   if (!playerSpriteMap[playerId]) {
@@ -72,7 +72,9 @@ function renderPlayer(playerId, newState) {
  * @param {string} playerId
  */
 function removeDeadPlayer(playerId) {
-  app.stage.removeChild(playerSprites[playerId]);
+  Object.keys(playerSprites[playerId]).forEach(spriteId => {
+    app.stage.removeChild(playerSprites[playerId][spriteId]);
+  });
   delete playerSprites[playerId];
 }
 
@@ -118,8 +120,7 @@ function handleMessage(message, ws) {
 /**
  * Initiates a connection to the server
  */
-function initiateSockets() {
-  const url = "0.0.0.0";
+function initiateSockets(url) {
   const port = 3000;
   const ws = new WebSocket(`ws://${url}:${port}`);
   ws.onmessage = message => handleMessage(message, ws);
@@ -162,11 +163,18 @@ function loadAssets() {
 /**
  * Starts the game
  */
-async function main() {
+async function main(url) {
   await loadAssets();
   setupRenderer();
-  initiateSockets();
+  initiateSockets(url);
 }
 
+function storeServer() {
+  console.log("storeserver");
+  const remote = document.getElementById("remote").value;
+  console.log("Connect to ", remote);
+  main(remote);
+}
+
+document.getElementById("connectButton").onclick = storeServer;
 document.getElementById("game").appendChild(app.view);
-main();

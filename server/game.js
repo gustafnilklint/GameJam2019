@@ -47,6 +47,7 @@ function newPlayer(playerId) {
  */
 function removePlayer(playerId) {
   players.delete(playerId);
+  apples.delete(playerId);
 }
 
 /**
@@ -146,7 +147,7 @@ function checkCollisions() {
           const distance = Math.sqrt(dx * dx + dy * dy);
 
           if (distance < player.radius) {
-            players.delete(playerId);
+            removePlayer(playerId);
           }
         });
       }
