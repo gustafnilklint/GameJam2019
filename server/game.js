@@ -2,6 +2,7 @@ const Matter = require("matter-js");
 
 const players = new Map();
 const world = {
+  apples: [],
   bullets: []
 };
 
@@ -136,7 +137,7 @@ function updatePlayer(player, id) {
   state.rotation = turnPlayer(pressedKeys, state);
 
   const { x, y } = movePlayer(pressedKeys, state);
-  state.path = [{ x, y }, { x: x + 10, y: y + 10 }];
+  state.path = [{ x, y }, { x: x + 5, y }, { x: x + 10, y }, { x: x + 15, y }];
   state.x = x;
   state.y = y;
 
@@ -171,6 +172,7 @@ function updateState() {
   players.forEach(updatePlayer);
 
   world.bullets = moveBullets(world.bullets);
+  world.apples = [{ x: 100, y: 100 }, { x: 200, y: 200 }];
 
   checkCollisions();
 

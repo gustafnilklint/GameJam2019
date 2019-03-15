@@ -2,30 +2,28 @@ import { Application, Sprite, loader } from "pixi.js";
 import { bindKey, KEYS } from "./keyboard";
 
 let PlayerTexture;
-let BulletTexture;
+let AppleTexture;
 
 const app = new Application();
 const playerSprites = {};
-const bulletSprites = [];
+const appleSprites = [];
 let id;
 let state;
 
-/**
- * Renders bullets by removing them all and adding them again
- * @param {object} newState
- */
-function renderBullets(newState) {
-  bulletSprites.forEach(bulletSprite => {
-    app.stage.removeChild(bulletSprite);
+function renderApples(newState) {
+  appleSprites.forEach(appleSprite => {
+    app.stage.removeChild(appleSprite);
   });
-  bulletSprites.length = 0; // emptying bulletSprites array
+  appleSprites.length = 0; // emptying appleSprites array
 
-  newState.world.bullets.forEach(bullet => {
-    const bulletSprite = new Sprite(BulletTexture);
-    bulletSprite.x = bullet.x;
-    bulletSprite.y = bullet.y;
-    app.stage.addChild(bulletSprite);
-    bulletSprites.push(bulletSprite);
+  newState.world.apples.forEach(apple => {
+    const appleSprite = new Sprite(AppleTexture);
+    appleSprite.x = apple.x;
+    appleSprite.y = apple.y;
+    appleSprite.width = 25;
+    appleSprite.height = 25;
+    app.stage.addChild(appleSprite);
+    appleSprites.push(appleSprite);
   });
 }
 
@@ -81,7 +79,7 @@ function render(newState) {
 
   deadPlayers.forEach(removeDeadPlayer);
   alivePlayers.forEach(playerId => renderPlayer(playerId, newState));
-  renderBullets(newState);
+  renderApples(newState);
 
   state = newState;
 }
@@ -126,12 +124,12 @@ function setupRenderer() {
  */
 function loadAssets() {
   const PLAYER_IMAGE_ASSET = "assets/red_dot.png";
-  const BULLET_IMAGE_ASSET = "assets/bullet.png";
+  const APPLE_IMAGE_ASSET = "assets/green_dot.png";
 
   return new Promise(res => {
-    loader.add([PLAYER_IMAGE_ASSET, BULLET_IMAGE_ASSET]).load(() => {
+    loader.add([PLAYER_IMAGE_ASSET, APPLE_IMAGE_ASSET]).load(() => {
       PlayerTexture = loader.resources[PLAYER_IMAGE_ASSET].texture;
-      BulletTexture = loader.resources[BULLET_IMAGE_ASSET].texture;
+      AppleTexture = loader.resources[APPLE_IMAGE_ASSET].texture;
       res();
     });
   });
