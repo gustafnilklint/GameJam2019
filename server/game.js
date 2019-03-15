@@ -1,6 +1,6 @@
 const Matter = require("matter-js");
 
-const SIZE = 500;
+const SIZE = 600;
 
 const players = new Map();
 const apples = new Map();
@@ -57,10 +57,10 @@ function isAlive(id) {
  * @returns {number} The rotation of the player, in radians
  */
 function turnPlayer(pressedKeys, state) {
-  if (pressedKeys.a === "keydown") {
+  if (pressedKeys.a === "keydown" || pressedKeys.left === "keydown") {
     return state.rotation - ROTATION_SPEED;
   }
-  if (pressedKeys.d === "keydown") {
+  if (pressedKeys.d === "keydown" || pressedKeys.right === "keydown") {
     return state.rotation + ROTATION_SPEED;
   }
   return state.rotation;
@@ -115,7 +115,7 @@ function updatePlayer(player, id) {
 
 function checkCollisions() {
   // Check all players vs all bullets for spherical collision
-  const apples = world.apples;
+  const { apples } = world;
   apples.forEach((apple, appleId) => {
     players.forEach(({ state: player }, playerId) => {
       const dx = player.x - apple.x;
