@@ -26,7 +26,7 @@ function newPlayer(playerId) {
     x: Math.random() * SIZE,
     y: Math.random() * SIZE,
     radius: 24,
-    length: 50,
+    length: 20,
     path: [],
     rotation: Math.random() * 2 * Math.PI
   };
@@ -124,7 +124,7 @@ function checkCollisions() {
 
       if (distance < player.radius + apple.radius) {
         apples.set(appleId, createApple());
-        player.length += 10;
+        player.length += 5;
       }
     });
   });
