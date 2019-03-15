@@ -26,9 +26,6 @@ function renderApples(newState) {
     app.stage.removeChild(appleSprite);
   });
   appleSprites.length = 0; // emptying appleSprites array
-  if (timeToLog-- <= 0) {
-    timeToLog = 100;
-  }
   Object.keys(newState.world.apples).forEach(appleId => {
     const apple = newState.world.apples[appleId];
     const appleSprite = new Sprite(AppleTexture);

@@ -4,8 +4,6 @@ const SIZE = 600;
 
 const players = new Map();
 const apples = new Map();
-apples.set("1", createApple());
-apples.set("2", createApple());
 const world = {
   apples
 };
@@ -14,7 +12,7 @@ const SPEED = 3;
 const ROTATION_SPEED = 0.1;
 
 function createApple() {
-  return { x: Math.random() * SIZE, y: Math.random() * SIZE, radius: 50 };
+  return { x: Math.random() * SIZE, y: Math.random() * SIZE, radius: 10 };
 }
 
 /**
@@ -25,7 +23,7 @@ function newPlayer(playerId) {
   const initialState = {
     x: Math.random() * SIZE,
     y: Math.random() * SIZE,
-    radius: 24,
+    radius: 10,
     length: 20,
     path: [],
     rotation: Math.random() * 2 * Math.PI
@@ -34,6 +32,7 @@ function newPlayer(playerId) {
     pressedKeys: {},
     state: initialState
   });
+  apples.set(playerId, createApple());
 }
 
 /**
@@ -125,6 +124,7 @@ function checkCollisions() {
       if (distance < player.radius + apple.radius) {
         apples.set(appleId, createApple());
         player.length += 5;
+        //player.radius = Math.min(player.radius + 1, 20);
       }
     });
   });
