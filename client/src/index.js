@@ -1,15 +1,26 @@
 import { Application, Sprite, loader } from "pixi.js";
 import { bindKey, KEYS } from "./keyboard";
 
-let PlayerTexture;
+let PlayerTextures;
 let AppleTexture;
 
 const app = new Application();
 const playerSprites = {};
 const appleSprites = [];
+const playerSpriteMap = {};
+let playerConnectionNumber = 0;
 let id;
 let state;
 let timeToLog = 1;
+
+const getNextPlayerSprite = playerId => {
+  if (!playerSpriteMap[playerId]) {
+    playerSpriteMap[playerId] = PlayerTextures[playerConnectionNumber];
+    playerConnectionNumber += 1;
+  }
+  return playerSpriteMap[playerId];
+};
+
 function renderApples(newState) {
   appleSprites.forEach(appleSprite => {
     app.stage.removeChild(appleSprite);
@@ -45,7 +56,7 @@ function renderPlayer(playerId, newState) {
       playerSprites[playerId] = {};
     }
     if (!playerSprites[playerId][i]) {
-      const newPlayer = new Sprite(PlayerTexture);
+      const newPlayer = new Sprite(getNextPlayerSprite(playerId));
       newPlayer.anchor.set(0.5, 0.5);
       app.stage.addChild(newPlayer);
       playerSprites[playerId][i] = newPlayer;
@@ -127,12 +138,22 @@ function setupRenderer() {
  * Loads assets for player and bullet
  */
 function loadAssets() {
-  const PLAYER_IMAGE_ASSET = "assets/red_dot.png";
+  const PLAYER_IMAGE_ASSETS = [
+    "assets/player1.png",
+    "assets/player2.png",
+    "assets/player3.png",
+    "assets/player4.png",
+    "assets/player5.png",
+    "assets/player6.png",
+    "assets/player7.png"
+  ];
   const APPLE_IMAGE_ASSET = "assets/green_dot.png";
 
   return new Promise(res => {
-    loader.add([PLAYER_IMAGE_ASSET, APPLE_IMAGE_ASSET]).load(() => {
-      PlayerTexture = loader.resources[PLAYER_IMAGE_ASSET].texture;
+    loader.add([...PLAYER_IMAGE_ASSETS, APPLE_IMAGE_ASSET]).load(() => {
+      PlayerTextures = PLAYER_IMAGE_ASSETS.map(
+        asset => loader.resources[asset].texture
+      );
       AppleTexture = loader.resources[APPLE_IMAGE_ASSET].texture;
       res();
     });
