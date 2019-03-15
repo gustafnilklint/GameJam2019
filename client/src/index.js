@@ -168,5 +168,5 @@ async function main() {
   initiateSockets();
 }
 
-document.body.appendChild(app.view);
+document.getElementById("game").appendChild(app.view);
 main();
