@@ -49,7 +49,6 @@ function handleNewClient(ws) {
  */
 function loop() {
   const nextState = gameLoop(keyEvents);
-  console.log(nextState);
   keyEvents.length = 0; // empties the inputs array
   broadcast({ type: "state", value: nextState });
 }
