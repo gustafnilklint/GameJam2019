@@ -36,7 +36,7 @@ function handleMessage(message) {
  * @param {WebSocket} ws
  */
 function handleNewClient(ws) {
-  const clientId = `player${clients.size}`;
+  const clientId = `player${+new Date()}`;
   clients.set(clientId, { ws });
 
   newPlayer(clientId);
