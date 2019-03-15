@@ -119,7 +119,7 @@ function handleMessage(message, ws) {
  * Initiates a connection to the server
  */
 function initiateSockets() {
-  const url = "127.0.0.1";
+  const url = "0.0.0.0";
   const port = 3000;
   const ws = new WebSocket(`ws://${url}:${port}`);
   ws.onmessage = message => handleMessage(message, ws);

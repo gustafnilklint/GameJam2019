@@ -125,8 +125,8 @@ function updatePlayer(player, id) {
 function checkCollisions() {
   // Check all players vs all bullets for spherical collision
   const { apples } = world;
-  apples.forEach((apple, appleId) => {
-    players.forEach(({ state: player }, playerId) => {
+  players.forEach(({ state: player }, playerId) => {
+    apples.forEach((apple, appleId) => {
       const dx = player.x - apple.x;
       const dy = player.y - apple.y;
       const distance = Math.sqrt(dx * dx + dy * dy);
@@ -136,6 +136,19 @@ function checkCollisions() {
         player.length += 5;
         player.speed = Math.min(player.speed + 0.2, MAX_SPEED);
         player.radius = Math.min(player.radius + 1, MAX_WIDTH);
+      }
+    });
+    players.forEach(({ state: opponent }, opponentId) => {
+      if (opponentId !== playerId) {
+        opponent.path.forEach(({ x, y }) => {
+          const dx = player.x - x;
+          const dy = player.y - y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+
+          if (distance < player.radius) {
+            players.delete(playerId);
+          }
+        });
       }
     });
   });
