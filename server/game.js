@@ -14,7 +14,7 @@ const SPEED = 3;
 const ROTATION_SPEED = 0.08;
 
 function createApple() {
-  return { x: Math.random() * SIZE, y: Math.random() * SIZE, radius: 0.5 };
+  return { x: Math.random() * SIZE, y: Math.random() * SIZE, radius: 50 };
 }
 
 /**
