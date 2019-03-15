@@ -36,8 +36,8 @@ function renderApples(newState) {
     appleSprite.anchor.set(0.5, 0.5);
     appleSprite.x = apple.x;
     appleSprite.y = apple.y;
-    appleSprite.width = 25;
-    appleSprite.height = 25;
+    appleSprite.width = apple.radius * 2;
+    appleSprite.height = apple.radius * 2;
     app.stage.addChild(appleSprite);
     appleSprites.push(appleSprite);
   });
@@ -61,8 +61,8 @@ function renderPlayer(playerId, newState) {
       newPlayer.anchor.set(0.5, 0.5);
       app.stage.addChild(newPlayer);
       playerSprites[playerId][i] = newPlayer;
-      playerSprites[playerId][i].width = 8;
-      playerSprites[playerId][i].height = 8;
+      playerSprites[playerId][i].width = player.radius * 2;
+      playerSprites[playerId][i].height = player.radius * 2;
     }
 
     playerSprites[playerId][i].x = coords.x;
