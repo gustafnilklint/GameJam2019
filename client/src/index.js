@@ -9,14 +9,18 @@ const playerSprites = {};
 const appleSprites = [];
 let id;
 let state;
-
+let timeToLog = 1;
 function renderApples(newState) {
   appleSprites.forEach(appleSprite => {
     app.stage.removeChild(appleSprite);
   });
   appleSprites.length = 0; // emptying appleSprites array
-
-  newState.world.apples.forEach(apple => {
+  if (timeToLog-- <= 0) {
+    console.log(newState);
+    timeToLog = 100;
+  }
+  Object.keys(newState.world.apples).forEach(appleId => {
+    const apple = newState.world.apples[appleId];
     const appleSprite = new Sprite(AppleTexture);
     appleSprite.x = apple.x;
     appleSprite.y = apple.y;
