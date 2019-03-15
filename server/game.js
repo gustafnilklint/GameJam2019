@@ -136,6 +136,7 @@ function updatePlayer(player, id) {
   state.rotation = turnPlayer(pressedKeys, state);
 
   const { x, y } = movePlayer(pressedKeys, state);
+  state.path = [{ x, y }, { x: x + 10, y: y + 10 }];
   state.x = x;
   state.y = y;
 

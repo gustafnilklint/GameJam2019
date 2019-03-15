@@ -36,19 +36,25 @@ function renderBullets(newState) {
  */
 function renderPlayer(playerId, newState) {
   const player = newState.players[playerId];
+  const { path } = player;
 
-  if (!playerSprites[playerId]) {
-    const newPlayer = new Sprite(PlayerTexture);
-    newPlayer.anchor.set(0.5, 0.5);
-    app.stage.addChild(newPlayer);
-    playerSprites[playerId] = newPlayer;
-    playerSprites[playerId].width = player.width;
-    playerSprites[playerId].height = player.height;
-  }
+  path.forEach((coords, i) => {
+    if (!playerSprites[playerId]) {
+      playerSprites[playerId] = {};
+    }
+    if (!playerSprites[playerId][i]) {
+      const newPlayer = new Sprite(PlayerTexture);
+      newPlayer.anchor.set(0.5, 0.5);
+      app.stage.addChild(newPlayer);
+      playerSprites[playerId][i] = newPlayer;
+      playerSprites[playerId][i].width = 8;
+      playerSprites[playerId][i].height = 8;
+    }
 
-  playerSprites[playerId].x = player.x;
-  playerSprites[playerId].y = player.y;
-  playerSprites[playerId].rotation = player.rotation;
+    playerSprites[playerId][i].x = coords.x;
+    playerSprites[playerId][i].y = coords.y;
+    playerSprites[playerId][i].rotation = player.rotation;
+  });
 }
 
 /**
@@ -119,7 +125,7 @@ function setupRenderer() {
  * Loads assets for player and bullet
  */
 function loadAssets() {
-  const PLAYER_IMAGE_ASSET = "assets/player.png";
+  const PLAYER_IMAGE_ASSET = "assets/red_dot.png";
   const BULLET_IMAGE_ASSET = "assets/bullet.png";
 
   return new Promise(res => {
