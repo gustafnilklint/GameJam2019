@@ -149,7 +149,7 @@ function loadAssets() {
     "assets/player6.png",
     "assets/player7.png"
   ];
-  const APPLE_IMAGE_ASSET = "assets/green_dot.png";
+  const APPLE_IMAGE_ASSET = "assets/apple.png";
 
   return new Promise(res => {
     loader.add([...PLAYER_IMAGE_ASSETS, APPLE_IMAGE_ASSET]).load(() => {
