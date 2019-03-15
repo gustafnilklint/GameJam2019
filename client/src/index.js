@@ -32,6 +32,7 @@ function renderApples(newState) {
   }
   Object.keys(newState.world.apples).forEach(appleId => {
     const apple = newState.world.apples[appleId];
+    apple.anchor.set(0.5, 0.5);
     const appleSprite = new Sprite(AppleTexture);
     appleSprite.x = apple.x;
     appleSprite.y = apple.y;
