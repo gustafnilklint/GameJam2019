@@ -1,9 +1,11 @@
 const Matter = require("matter-js");
 
+const SIZE = 500;
+
 const players = new Map();
 const apples = new Map();
-apples.set("1", { x: 100, y: 100, radius: 0.5 });
-apples.set("2", { x: 200, y: 200, radius: 0.5 });
+apples.set("1", createApple());
+apples.set("2", createApple());
 const world = {
   apples
 };
@@ -11,14 +13,18 @@ const world = {
 const SPEED = 1;
 const ROTATION_SPEED = 0.08;
 
+function createApple() {
+  return { x: Math.random() * SIZE, y: Math.random() * SIZE, radius: 0.5 };
+}
+
 /**
  * Adds a new player
  * @param {string} playerId
  */
 function newPlayer(playerId) {
   const initialState = {
-    x: Math.random() * 500,
-    y: Math.random() * 500,
+    x: Math.random() * SIZE,
+    y: Math.random() * SIZE,
     radius: 24,
     length: 50,
     path: [],
@@ -104,7 +110,7 @@ function checkCollisions() {
       const distance = Math.sqrt(dx * dx + dy * dy);
 
       if (distance < player.radius + apple.radius) {
-        apples.delete(appleId);
+        apples.set(appleId, createApple());
         player.length += 10;
       }
     });
