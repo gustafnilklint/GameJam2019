@@ -10,7 +10,7 @@ const world = {
   apples
 };
 
-const SPEED = 1;
+const SPEED = 3;
 const ROTATION_SPEED = 0.08;
 
 function createApple() {
@@ -66,6 +66,18 @@ function turnPlayer(pressedKeys, state) {
   return state.rotation;
 }
 
+function wrapAround({ x, y }) {
+  let wrappedX = x % SIZE;
+  let wrappedY = y % SIZE;
+  if (wrappedX < 0) {
+    wrappedX += SIZE;
+  }
+  if (wrappedY < 0) {
+    wrappedY += SIZE;
+  }
+  return { x: wrappedX, y: wrappedY };
+}
+
 /**
  * Moves the player if the `w` or `s` key has been pressed
  * @returns {{x: number, y: number}} The new position of the player
@@ -77,8 +89,9 @@ function movePlayer(pressedKeys, state) {
 
   const currentPosition = Matter.Vector.create(state.x, state.y);
   const nextPosition = Matter.Vector.add(currentPosition, translation);
+  const actualPosition = wrapAround(nextPosition);
 
-  return { x: nextPosition.x, y: nextPosition.y };
+  return actualPosition;
 }
 
 /**
