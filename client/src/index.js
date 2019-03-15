@@ -57,12 +57,12 @@ function renderPlayer(playerId, newState) {
       newPlayer.anchor.set(0.5, 0.5);
       app.stage.addChild(newPlayer);
       playerSprites[playerId][i] = newPlayer;
-      playerSprites[playerId][i].width = player.radius * 2;
-      playerSprites[playerId][i].height = player.radius * 2;
     }
 
     playerSprites[playerId][i].x = coords.x;
     playerSprites[playerId][i].y = coords.y;
+    playerSprites[playerId][i].width = player.radius * 2;
+    playerSprites[playerId][i].height = player.radius * 2;
     playerSprites[playerId][i].rotation = player.rotation;
   });
 }

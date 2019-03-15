@@ -8,8 +8,13 @@ const world = {
   apples
 };
 
-const SPEED = 3;
+const START_SPEED = 3;
 const ROTATION_SPEED = 0.1;
+const MAX_WIDTH = 20;
+const MAX_SPEED = 5;
+
+const TAIL_UPDATE_TICKS = 2;
+let currentTailUpdate = 0;
 
 function createApple() {
   return { x: Math.random() * SIZE, y: Math.random() * SIZE, radius: 10 };
@@ -24,8 +29,9 @@ function newPlayer(playerId) {
     x: Math.random() * SIZE,
     y: Math.random() * SIZE,
     radius: 10,
-    length: 20,
+    length: 10,
     path: [],
+    speed: START_SPEED,
     rotation: Math.random() * 2 * Math.PI
   };
   players.set(playerId, {
@@ -84,7 +90,7 @@ function wrapAround({ x, y }) {
 function movePlayer(pressedKeys, state) {
   let translation = Matter.Vector.create(0, -1);
   translation = Matter.Vector.rotate(translation, state.rotation);
-  translation = Matter.Vector.mult(translation, SPEED);
+  translation = Matter.Vector.mult(translation, state.speed);
 
   const currentPosition = Matter.Vector.create(state.x, state.y);
   const nextPosition = Matter.Vector.add(currentPosition, translation);
@@ -103,11 +109,15 @@ function updatePlayer(player, id) {
 
   state.rotation = turnPlayer(pressedKeys, state);
 
-  const { x, y } = movePlayer(pressedKeys, state);
-  state.path.unshift({ x, y });
-  state.path = state.path.slice(0, state.length);
-  state.x = x;
-  state.y = y;
+  const pos = movePlayer(pressedKeys, state);
+  if (currentTailUpdate === 0) {
+    state.path.unshift(pos);
+  } else {
+    state.path[0] = pos;
+    state.path = state.path.slice(0, state.length);
+  }
+  state.x = pos.x;
+  state.y = pos.y;
 
   players.set(id, { ...player, state });
 }
@@ -124,7 +134,8 @@ function checkCollisions() {
       if (distance < player.radius + apple.radius) {
         apples.set(appleId, createApple());
         player.length += 5;
-        //player.radius = Math.min(player.radius + 1, 20);
+        player.speed = Math.min(player.speed + 0.2, MAX_SPEED);
+        player.radius = Math.min(player.radius + 1, MAX_WIDTH);
       }
     });
   });
@@ -136,6 +147,7 @@ function checkCollisions() {
  */
 function updateState() {
   players.forEach(updatePlayer);
+  currentTailUpdate = (currentTailUpdate + 1) % TAIL_UPDATE_TICKS;
 
   checkCollisions();
 
