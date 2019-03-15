@@ -27,7 +27,6 @@ function renderApples(newState) {
   });
   appleSprites.length = 0; // emptying appleSprites array
   if (timeToLog-- <= 0) {
-    console.log(newState);
     timeToLog = 100;
   }
   Object.keys(newState.world.apples).forEach(appleId => {
@@ -109,7 +108,9 @@ function handleMessage(message, ws) {
   const data = JSON.parse(message.data);
   if (data.type === "id") {
     id = data.value;
-    Object.values(KEYS).forEach(key => bindKey(id, key, ws));
+    Object.values(KEYS).forEach(key => {
+      bindKey(id, key, ws);
+    });
   } else if (data.type === "state") {
     render(data.value);
   } else if (data.type === "ping") {

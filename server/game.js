@@ -11,7 +11,7 @@ const world = {
 };
 
 const SPEED = 3;
-const ROTATION_SPEED = 0.08;
+const ROTATION_SPEED = 0.1;
 
 function createApple() {
   return { x: Math.random() * SIZE, y: Math.random() * SIZE, radius: 50 };
